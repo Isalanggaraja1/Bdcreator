@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Minecraft Bedrock Item Generator</title>
+
+    <!-- Pyscript -->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+    <style>
+        body {
+            background: #1d1d1d;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input {
+            width: 300px;
+            padding: 7px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+        #output {
+            background: #101010;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            white-space: pre;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Minecraft Bedrock Item JSON Generator</h2>
+
+    <label>Nama Item (ID)</label><br>
+    <input type="text" id="item_id" placeholder="contoh: custom:sword" /><br>
+
+    <label>Nama Tampilan</label><br>
+    <input type="text" id="display_name" placeholder="contoh: Dark Sword" /><br>
+
+    <label>Durability</label><br>
+    <input type="number" id="durability" value="250" /><br>
+
+    <button onclick="generate()">Generate JSON</button>
+
+    <pre id="output"></pre>
+
+    <py-script>
+from js import document
+
+def generate():
+    item_id = document.getElementById("item_id").value
+    display_name = document.getElementById("display_name").value
+    durability = document.getElementById("durability").value
+
+    json_template = f"""
+{{
+  "format_version": "1.16.0",
+  "minecraft:item": {{
+    "description": {{
+      "identifier": "{item_id}",
+      "category": "Equipment"
+    }},
+    "components": {{
+      "minecraft:icon": {{
+        "texture": "{item_id.split(':')[1]}"
+      }},
+      "minecraft:display_name": {{
+        "value": "{display_name}"
+      }},
+      "minecraft:durability": {{
+        "max_durability": {durability}
+      }}
+    }}
+  }}
+}}
+"""
+
+    document.getElementById("output").innerText = json_template
+
+</py-script>
+</body>
+</html>
